@@ -1,0 +1,17 @@
+#!/bin/bash
+pcpu_max=10
+
+./script4_1 & pid1="$!"
+./script4_1 & pid2="$!"
+./script4_1 & pid3="$!"
+
+while [[ true ]]; do
+	pcpu_cur=$(ps -p "$pid1" -o pcpu | tail -n 1)
+	if (( $(echo "$pcpu_max < $pcpu_cur" | bc -l) )); then
+		proc_nice=$(ps -p "$pid1" -o ni | tail -n 1)
+		if [[ "$proc_nice" -le 20 ]]; then
+			let "proc_nice = $proc_nice + 1"
+		fi
+		renice -n "$proc_nice" -p "$pid1"
+	fi
+done
