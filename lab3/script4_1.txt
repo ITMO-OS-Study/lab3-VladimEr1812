@@ -1,6 +1,0 @@
-#!/bin/bash
-
-x=0
-while [[ true ]]; do
-	let "x = 2 * 2"
-done
