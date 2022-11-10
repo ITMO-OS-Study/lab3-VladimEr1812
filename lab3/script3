@@ -1,0 +1,4 @@
+#!/bin/bash
+
+d="$(date + %u)"
+echo "/5 * * * $d ./script1" | crontab
