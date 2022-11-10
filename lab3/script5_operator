@@ -1,0 +1,38 @@
+#!/bin/bash
+
+operator="+"
+x=1
+(tail -f pipe) |
+while true; do
+	read l
+	case "$l" in
+		"QUIT")
+			echo "exit"
+			killall tail
+			exit 0
+			;;
+		"+")
+			operator="+"
+			;;
+		"*")
+			operator="*"
+			;;
+		[0-9]*)
+			case "$operator" in
+				"+")
+					let "x = $x + $l"
+					echo "Sum res is $x"
+					;;
+				"*")
+					let "x = $x * $l"
+					echo "Mult res is $x"
+					;;
+			esac
+			;;
+		*)
+			echo "incorrect input"
+			killall tail
+			exit 1
+			;;
+	esac
+done
